@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="sv">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Admin Work Planner</title>
+		<link rel="stylesheet" href="style.css" />
+		<script src="script.js" defer></script>
+	</head>
+	<body>
+		<main>
+			<h1>Admin Work Planner</h1>
+
+			<p>Antal tasks totalt: <strong id="count">0</strong></p>
+			<p>Klara tasks: <strong id="done">0</strong></p>
+
+			<section>
+				<input type="number" id="search-id" placeholder="Sök på Task ID" />
+				<button id="search-btn">Sök Task</button>
+				<div id="search-result"></div>
+			</section>
+
+			<section style="margin: 15px 0">
+				<button class="filter-btn" data-filter="all">Alla Tasks</button>
+				<button class="filter-btn" data-filter="High">High Priority</button>
+				<button class="filter-btn" data-filter="Medium">Medium Priority</button>
+				<button class="filter-btn" data-filter="Low">Low Priority</button>
+			</section>
+
+			<section>
+				<h2>Arbetsuppgifter</h2>
+				<ul id="task-list"></ul>
+			</section>
+		</main>
+	</body>
+</html>
