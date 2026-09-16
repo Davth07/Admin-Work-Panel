@@ -127,10 +127,13 @@ searchBtn.addEventListener("click", () => {
 signUp.addEventListener("click", () => {
 	form.hidden = false;
 	form2.hidden = true;
+	form.style.display = "flex";
 	feedback.textContent = "";
 });
 signIn.addEventListener("click", () => {
 	form2.hidden = false;
+	form2.style.display = "flex";
+	form.style.display = "none";
 	form.hidden = true;
 	feedback.textContent = "";
 });
@@ -193,8 +196,13 @@ function signInFunction() {
 	form2.hidden = true;
 	signIn.hidden = true;
 	signUp.hidden = true;
+	signUp.style.display = "none";
+	signIn.style.display = "none";
+	form2.style.display = "none";
 	main.hidden = false;
 	feedback.textContent = "";
+	const nav = document.getElementById("nav");
+	nav.style.display = "none";
 }
 
 form.addEventListener("submit", function (event) {
