@@ -79,6 +79,13 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 const searchInput = document.getElementById("search-id");
 const searchBtn = document.getElementById("search-btn");
 const searchResult = document.getElementById("search-result");
+const signUp = document.getElementById("signUp");
+const signIn = document.getElementById("signIn");
+const feedback = document.getElementById("feedback");
+
+const form = document.getElementById("signUpForm");
+const form2 = document.getElementById("signInForm");
+const main = document.getElementById("main");
 
 function saveToLocalStorage(arrayToSave) {
 	localStorage.setItem("admin_tasks", JSON.stringify(arrayToSave));
@@ -115,6 +122,88 @@ searchBtn.addEventListener("click", () => {
 	} else {
 		searchResult.innerHTML = `<p style="color: red;">Ingen uppgift hittades med ID ${searchInput.value}</p>`;
 	}
+});
+
+signUp.addEventListener("click", () => {
+	form.hidden = false;
+	form2.hidden = true;
+	feedback.textContent = "";
+});
+signIn.addEventListener("click", () => {
+	form2.hidden = false;
+	form.hidden = true;
+	feedback.textContent = "";
+});
+
+function signUpFunction() {
+	const emailInput = document.getElementById("email");
+	const passwordInput = document.getElementById("password");
+	const confirmInput = document.getElementById("confirm");
+
+	const email = emailInput.value.trim();
+	const password = passwordInput.value;
+	const confirm = confirmInput.value;
+
+	if (email === "" || !email.includes("@")) {
+		feedback.textContent = "Email får inte vara tom och måste innehålla '@'.";
+		return;
+	}
+	if (password.length < 8) {
+		feedback.textContent = "Lösenord måste vara minst 8 tecken.";
+		return;
+	}
+	if (password !== confirm) {
+		feedback.textContent = "Lösenorden matchar inte.";
+		return;
+	}
+	const customer = {
+		id: 1,
+		email: emailInput.value.trim(),
+		password: passwordInput.value,
+	};
+
+	const customerJSON = JSON.stringify(customer);
+
+	localStorage.setItem("registeredCustomer", customerJSON);
+	feedback.textContent = "Konto skapat!";
+	form.hidden = true;
+}
+
+function signInFunction() {
+	const emailInput2 = document.getElementById("email2");
+	const passwordInput2 = document.getElementById("password2");
+
+	const email2 = emailInput2.value.trim();
+	const password2 = passwordInput2.value;
+	const user = JSON.parse(localStorage.getItem("registeredCustomer"));
+	if (!user) {
+		feedback.textContent = "Inga användare hittats. Skapa ett konto. ";
+		return;
+	}
+	if (email2 !== user.email) {
+		feedback.textContent = "Lösenord eller Email är fel.";
+		return;
+	}
+	if (password2 !== user.password) {
+		feedback.textContent = "Lösenord eller Email är fel.";
+		return;
+	}
+
+	form.hidden = true;
+	form2.hidden = true;
+	signIn.hidden = true;
+	signUp.hidden = true;
+	main.hidden = false;
+	feedback.textContent = "";
+}
+
+form.addEventListener("submit", function (event) {
+	event.preventDefault();
+	signUpFunction();
+});
+form2.addEventListener("submit", function (event) {
+	event.preventDefault();
+	signInFunction();
 });
 
 function renderTasks() {

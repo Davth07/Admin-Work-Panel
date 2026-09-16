@@ -8,7 +8,33 @@
 		<script src="script.js" defer></script>
 	</head>
 	<body>
-		<main>
+		<button id="signUp">Sign Up</button>
+		<button id="signIn">Sign In</button>
+		<form id="signUpForm" hidden>
+			<h2>Skapa konto</h2>
+			<label for="email">Email:</label>
+			<input type="text" name="email" id="email" />
+
+			<label for="password">Password:</label>
+			<input type="password" name="password" id="password" />
+
+			<label for="confirm">Confirm Password:</label>
+			<input type="password" name="confirm" id="confirm" />
+
+			<button type="submit" id="submitBtn">Skapa användare</button>
+		</form>
+		<form id="signInForm" hidden>
+			<h2>Sign in</h2>
+			<label for="email2">Email:</label>
+			<input type="text" name="email2" id="email2" />
+
+			<label for="password2">Password:</label>
+			<input type="password" name="password2" id="password2" />
+
+			<button type="submit" id="submitBtn2">Sign in</button>
+		</form>
+		<p id="feedback"></p>
+		<main hidden id="main">
 			<h1>Admin Work Planner</h1>
 
 			<p>Antal tasks totalt: <strong id="count">0</strong></p>
