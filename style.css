@@ -2,7 +2,9 @@ body {
 	background-color: white;
 	margin: 0;
 	height: 100vh;
+	font-family: sans-serif;
 }
+
 main {
 	font-family: sans-serif;
 	max-width: 500px;
@@ -11,19 +13,6 @@ main {
 	border: 2px solid black;
 	padding: 40px;
 	border-radius: 20px;
-}
-
-li {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 8px;
-}
-#feedback {
-	text-align: center;
-	font-family: sans-serif;
-	font-weight: bold;
-	margin-top: 15px;
 }
 
 header {
@@ -35,6 +24,7 @@ header {
 	height: 100px;
 	margin: 0;
 }
+
 header button {
 	padding: 15px;
 	height: 60px;
@@ -44,39 +34,126 @@ header button {
 	background-color: white;
 	color: black;
 }
+
 header button:hover {
 	background-color: rgb(236, 236, 236);
 	cursor: pointer;
 }
+
 form {
-	justify-content: center;
-	align-items: center;
-	min-height: calc(100vh - 100px);
+	max-width: 300px;
+	margin: 40px auto;
 }
-form button {
-	padding: 10px;
-	border: black 2px solid;
-	background-color: white;
-	border-radius: 10px;
-	margin-top: 10px;
-}
-form button:hover {
-	background-color: rgb(236, 236, 236);
-	cursor: pointer;
-}
-form input {
-	width: 100%;
-}
+
 .formDiv {
+	display: flex;
+	flex-direction: column;
+	gap: px;
 	border: 2px solid black;
 	padding: 30px;
+	border-radius: 10px;
+	background-color: #f9f9f9;
 }
+
+form label {
+	font-weight: bold;
+}
+
+form input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 6px;
+}
+
+form button {
+	margin-top: 10px;
+	padding: 8px;
+	cursor: pointer;
+	border: 2px solid black;
+	background-color: white;
+	border-radius: 5px;
+	font-weight: bold;
+}
+
+form button:hover {
+	background-color: rgb(236, 236, 236);
+}
+
+.method-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#feedback,
+#feedback2 {
+	font-weight: bold;
+	margin-top: 15px;
+	text-align: center;
+}
+
+#feedback2 {
+	color: red;
+}
+
+.search-success {
+	color: green;
+}
+.search-error {
+	color: red;
+}
+
+#session-info {
+	display: none;
+	align-items: center;
+	gap: 15px;
+	font-family: sans-serif;
+	margin-left: auto;
+}
+
+#logoutBtn {
+	padding: 5px 10px;
+	height: auto;
+	font-size: 14px;
+}
+
 main button {
 	padding: 5px;
 	border: black 2px solid;
 	background-color: white;
 	border-radius: 10px;
 }
-.hidden {
-	display: none;
+
+#task-list {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+li {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 10px;
+	padding: 8px;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+}
+
+li span {
+	flex-grow: 1;
+}
+
+li button {
+	margin-left: auto;
+	cursor: pointer;
+}
+
+.completed {
+	color: #888;
+}
+
+main button:hover {
+	cursor: pointer;
+	background-color: rgb(236, 236, 236);
 }

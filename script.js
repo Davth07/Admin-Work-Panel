@@ -70,6 +70,8 @@ function loadInitialTasks() {
 
 let tasks = loadInitialTasks();
 let currentFilter = "all";
+let tempUser = null;
+let timerInterval = null;
 
 const taskList = document.getElementById("task-list");
 const totalCounter = document.getElementById("count");
@@ -82,10 +84,18 @@ const searchResult = document.getElementById("search-result");
 const signUp = document.getElementById("signUp");
 const signIn = document.getElementById("signIn");
 const feedback = document.getElementById("feedback");
+const feedback2 = document.getElementById("feedback2");
 
 const form = document.getElementById("signUpForm");
 const form2 = document.getElementById("signInForm");
 const main = document.getElementById("main");
+
+const loginStep1 = document.getElementById("login-step1");
+const loginStep2 = document.getElementById("login-step2");
+const sessionInfo = document.getElementById("session-info");
+const loggedUser = document.getElementById("logged-user");
+const sessionTime = document.getElementById("session-time");
+const logoutBtn = document.getElementById("logoutBtn");
 
 function saveToLocalStorage(arrayToSave) {
 	localStorage.setItem("admin_tasks", JSON.stringify(arrayToSave));
@@ -118,24 +128,23 @@ searchBtn.addEventListener("click", () => {
 	const foundTask = tasks.find((t) => t.id === searchId);
 
 	if (foundTask) {
-		searchResult.innerHTML = `<p style="color: green;">Hittade: <strong>${foundTask.title}</strong> (${foundTask.priority})</p>`;
+		searchResult.innerHTML = `<p class="search-success">Hittade: <strong>${foundTask.title}</strong> (${foundTask.priority})</p>`;
 	} else {
-		searchResult.innerHTML = `<p style="color: red;">Ingen uppgift hittades med ID ${searchInput.value}</p>`;
+		searchResult.innerHTML = `<p class="search-error">Ingen uppgift hittades med ID ${searchInput.value}</p>`;
 	}
 });
 
 signUp.addEventListener("click", () => {
 	form.hidden = false;
 	form2.hidden = true;
-	form.style.display = "flex";
 	feedback.textContent = "";
 });
 signIn.addEventListener("click", () => {
 	form2.hidden = false;
-	form2.style.display = "flex";
-	form.style.display = "none";
 	form.hidden = true;
-	feedback.textContent = "";
+	loginStep1.style.display = "flex";
+	loginStep2.style.display = "none";
+	feedback2.textContent = "";
 });
 
 function signUpFunction() {
@@ -159,17 +168,19 @@ function signUpFunction() {
 		feedback.textContent = "Lösenorden matchar inte.";
 		return;
 	}
+
+	const users = JSON.parse(localStorage.getItem("adminPlannerUsers")) || [];
+
 	const customer = {
-		id: 1,
-		email: emailInput.value.trim(),
-		password: passwordInput.value,
+		email: email,
+		password: password,
 	};
 
-	const customerJSON = JSON.stringify(customer);
+	users.push(customer);
+	localStorage.setItem("adminPlannerUsers", JSON.stringify(users));
 
-	localStorage.setItem("registeredCustomer", customerJSON);
-	feedback.textContent = "Konto skapat!";
-	form.hidden = true;
+	feedback.textContent = "Konto skapat! Gå till Sign In.";
+	form.reset();
 }
 
 function signInFunction() {
@@ -178,32 +189,75 @@ function signInFunction() {
 
 	const email2 = emailInput2.value.trim();
 	const password2 = passwordInput2.value;
-	const user = JSON.parse(localStorage.getItem("registeredCustomer"));
+
+	const users = JSON.parse(localStorage.getItem("adminPlannerUsers")) || [];
+	const user = users.find((u) => u.email === email2);
+
 	if (!user) {
-		feedback.textContent = "Inga användare hittats. Skapa ett konto. ";
-		return;
-	}
-	if (email2 !== user.email) {
-		feedback.textContent = "Lösenord eller Email är fel.";
+		feedback2.textContent = "Ingen användare hittades med den e-posten.";
 		return;
 	}
 	if (password2 !== user.password) {
-		feedback.textContent = "Lösenord eller Email är fel.";
+		feedback2.textContent = "Lösenord eller Email är fel.";
 		return;
 	}
 
+	tempUser = user;
+	loginStep1.style.display = "none";
+	loginStep2.style.display = "block";
+}
+
+document.querySelectorAll(".method-btn").forEach((btn) => {
+	btn.addEventListener("click", (e) => {
+		const chosenMethod = e.target.getAttribute("data-method");
+
+		const session = {
+			email: tempUser.email,
+			method: chosenMethod,
+			loginTime: Date.now(),
+		};
+		localStorage.setItem("adminPlannerSession", JSON.stringify(session));
+
+		startApplication(session);
+	});
+});
+
+function startApplication(session) {
 	form.hidden = true;
 	form2.hidden = true;
-	signIn.hidden = true;
-	signUp.hidden = true;
-	signUp.style.display = "none";
 	signIn.style.display = "none";
+	signUp.style.display = "none";
 	form2.style.display = "none";
+
+	sessionInfo.style.display = "flex";
+	loggedUser.textContent = `Inloggad: ${session.email} (${session.method})`;
+
 	main.hidden = false;
-	feedback.textContent = "";
-	const nav = document.getElementById("nav");
-	nav.style.display = "none";
+	feedback2.textContent = "";
+	renderTasks();
+
+	clearInterval(timerInterval);
+	timerInterval = setInterval(() => {
+		const elapsed = Date.now() - session.loginTime;
+		const seconds = Math.floor(elapsed / 1000);
+		sessionTime.textContent = `Session: ${seconds}s`;
+	}, 1000);
 }
+
+logoutBtn.addEventListener("click", () => {
+	localStorage.removeItem("adminPlannerSession");
+	clearInterval(timerInterval);
+
+	main.hidden = true;
+	sessionInfo.style.display = "none";
+	signIn.style.display = "inline-block";
+	signUp.style.display = "inline-block";
+	form2.hidden = false;
+	form2.style.display = "flex";
+	loginStep1.style.display = "block";
+	loginStep2.style.display = "none";
+	form2.reset();
+});
 
 form.addEventListener("submit", function (event) {
 	event.preventDefault();
@@ -253,4 +307,9 @@ function renderTasks() {
 	doneCounter.textContent = tasks.filter((task) => task.done).length;
 }
 
-renderTasks();
+const activeSession = JSON.parse(localStorage.getItem("adminPlannerSession"));
+if (activeSession) {
+	startApplication(activeSession);
+} else {
+	renderTasks();
+}

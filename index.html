@@ -10,7 +10,13 @@
 	<body>
 		<header id="nav">
 			<button id="signUp">Sign Up</button>
-			<button id="signIn" class="sign">Sign In</button>
+			<button id="signIn">Sign In</button>
+
+			<div id="session-info">
+				<span id="logged-user"></span>
+				<span id="session-time">Session: 0s</span>
+				<button id="logoutBtn">Logout</button>
+			</div>
 		</header>
 
 		<form id="signUpForm" hidden>
@@ -18,31 +24,38 @@
 				<h2>Sign Up</h2>
 				<label for="email">Email:</label>
 				<input type="text" name="email" id="email" />
-				<br />
 
 				<label for="password">Password:</label>
 				<input type="password" name="password" id="password" />
-				<br />
 				<label for="confirm">Confirm Password:</label>
 				<input type="password" name="confirm" id="confirm" />
-				<br />
 				<button type="submit" id="submitBtn">Create user</button>
 				<p id="feedback"></p>
 			</div>
 		</form>
+
 		<form id="signInForm" hidden>
-			<div class="formDiv">
+			<div class="formDiv" id="login-step1">
 				<h2>Sign in</h2>
 				<label for="email2">Email:</label>
 				<input type="text" name="email2" id="email2" />
-				<br />
 
 				<label for="password2">Password:</label>
 				<input type="password" name="password2" id="password2" />
-				<br />
 
-				<button type="submit" id="submitBtn2">Sign in</button>
-				<p id="feedback"></p>
+				<button type="submit" id="submitBtn2">Continue</button>
+				<p id="feedback2"></p>
+			</div>
+
+			<div class="formDiv" id="login-step2">
+				<h2>Sign in - Step 2</h2>
+				<p>Välj inloggningsmetod:</p>
+				<button type="button" class="method-btn" data-method="Mobile BankID">
+					Mobile BankID
+				</button>
+				<button type="button" class="method-btn" data-method="Security Token">
+					Security Token
+				</button>
 			</div>
 		</form>
 
