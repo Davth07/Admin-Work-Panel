@@ -19,7 +19,7 @@
 			</div>
 		</header>
 
-		<form id="signUpForm" hidden>
+		<form id="signUpForm">
 			<div class="formDiv">
 				<h2>Sign Up</h2>
 				<label for="email">Email:</label>
@@ -69,6 +69,23 @@
 				<input type="number" id="search-id" placeholder="Sök på Task ID" />
 				<button id="search-btn">Sök Task</button>
 				<div id="search-result"></div>
+			</section>
+			<section style="margin-bottom: 20px">
+				<h2>Skapa ny task</h2>
+				<form id="task-form">
+					<input
+						type="text"
+						id="task-title"
+						placeholder="Vad behöver göras?"
+						required
+					/>
+					<select id="task-priority">
+						<option value="Low">Låg prioritet</option>
+						<option value="Medium" selected>Medium prioritet</option>
+						<option value="High">Hög prioritet</option>
+					</select>
+					<button type="submit">Lägg till</button>
+				</form>
 			</section>
 
 			<section style="margin: 15px 0">

@@ -72,7 +72,7 @@ let tasks = loadInitialTasks();
 let currentFilter = "all";
 let tempUser = null;
 let timerInterval = null;
-
+// * Behöver använda mer kommentarer
 const taskList = document.getElementById("task-list");
 const totalCounter = document.getElementById("count");
 const doneCounter = document.getElementById("done");
@@ -96,6 +96,10 @@ const sessionInfo = document.getElementById("session-info");
 const loggedUser = document.getElementById("logged-user");
 const sessionTime = document.getElementById("session-time");
 const logoutBtn = document.getElementById("logoutBtn");
+
+const taskForm = document.getElementById("task-form");
+const taskTitleInput = document.getElementById("task-title");
+const taskPrioritySelect = document.getElementById("task-priority");
 
 function saveToLocalStorage(arrayToSave) {
 	localStorage.setItem("admin_tasks", JSON.stringify(arrayToSave));
@@ -138,10 +142,13 @@ signUp.addEventListener("click", () => {
 	form.hidden = false;
 	form2.hidden = true;
 	feedback.textContent = "";
+	form2.style.display = "none";
 });
 signIn.addEventListener("click", () => {
 	form2.hidden = false;
 	form.hidden = true;
+	form2.hidden = false;
+	form2.style.display = "flex";
 	loginStep1.style.display = "flex";
 	loginStep2.style.display = "none";
 	feedback2.textContent = "";
@@ -203,6 +210,7 @@ function signInFunction() {
 	}
 
 	tempUser = user;
+
 	loginStep1.style.display = "none";
 	loginStep2.style.display = "block";
 }
@@ -266,6 +274,29 @@ form.addEventListener("submit", function (event) {
 form2.addEventListener("submit", function (event) {
 	event.preventDefault();
 	signInFunction();
+});
+taskForm.addEventListener("submit", function (event) {
+	event.preventDefault();
+
+	const title = taskTitleInput.value.trim();
+	const priority = taskPrioritySelect.value;
+
+	if (title === "") return;
+
+	const newId = tasks.length > 0 ? Math.max(...tasks.map((t) => t.id)) + 1 : 1;
+
+	const newTask = {
+		id: newId,
+		title: title,
+		priority: priority,
+		done: false,
+	};
+
+	tasks.push(newTask);
+	saveToLocalStorage(tasks);
+	renderTasks();
+
+	taskForm.reset();
 });
 
 function renderTasks() {
